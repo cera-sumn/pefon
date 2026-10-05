@@ -1,0 +1,1171 @@
+<!-- ============ studing.html ============ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>配分语学习 · PEFON 教程</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #fbfaf7;
+    --rule: #e6e2d8;
+    --gold: #e6a817;
+    --gold-soft: #fff8e1;
+    --gold-dark: #b8860b;
+    --blue: #3a7bd5;
+    --blue-soft: #eef4fb;
+    --green: #4a9d5f;
+    --green-soft: #edf7ee;
+    --purple: #7a5af8;
+    --purple-soft: #f1eefe;
+    --pink: #d96b8b;
+    --pink-soft: #fdeef3;
+    --muted: #8a8578;
+    --sidebar-w: 280px;
+    --topbar-h: 64px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: #ece9e2;
+    color: var(--ink);
+    font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "SimSun", Georgia, serif;
+    line-height: 1.8;
+  }
+
+  /* ============ 全局固定顶栏 ============ */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: var(--topbar-h);
+    background: rgba(251,250,247,0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar .inner {
+    max-width: 1240px; margin: 0 auto;
+    height: var(--topbar-h); padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .topbar .brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+    font-weight: bold; letter-spacing: 3px; font-size: 19px;
+    white-space: nowrap;
+  }
+  .topbar .brand span { color: var(--gold); }
+  .topbar .brand small {
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 2px; font-weight: normal;
+    margin-left: 2px;
+  }
+  .topbar .toggle-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border: 1.5px solid var(--rule);
+    background: #fff; border-radius: 8px; cursor: pointer;
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    transition: all .15s; white-space: nowrap;
+  }
+  .topbar .toggle-btn:hover {
+    background: var(--gold-soft); border-color: var(--gold); color: var(--gold-dark);
+  }
+  .topbar .toggle-btn .bars {
+    display: inline-flex; flex-direction: column;
+    gap: 3px; width: 16px;
+  }
+  .topbar .toggle-btn .bars i {
+    display: block; height: 2px; background: currentColor; border-radius: 1px;
+  }
+  .topbar .links {
+    display: flex; gap: 4px; margin-left: auto;
+  }
+  .topbar .links a {
+    color: var(--ink); text-decoration: none;
+    padding: 8px 18px; border-radius: 8px;
+    font-size: 15px; transition: all .15s;
+    letter-spacing: 1px; white-space: nowrap;
+  }
+  .topbar .links a:hover { background: var(--gold-soft); color: var(--gold-dark); }
+  .topbar .links a.active { background: var(--gold); color: #fff; }
+  .topbar .head-link {
+    display: inline-flex; align-items: center;
+    margin-left: 4px; text-decoration: none;
+    transition: transform .15s;
+  }
+  .topbar .head-link:hover { transform: scale(1.08); }
+  .head-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #f9d97a, #e6a817);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px; font-weight: bold;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(230,168,23,0.35);
+    overflow: hidden; flex-shrink: 0;
+  }
+  .head-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 900px) {
+    .topbar .inner { padding: 0 14px; gap: 10px; }
+    .topbar .brand { font-size: 15px; letter-spacing: 2px; }
+    .topbar .brand small { display: none; }
+    .topbar .links a { padding: 6px 10px; font-size: 13px; }
+    .topbar .toggle-btn { padding: 6px 10px; font-size: 13px; }
+    .topbar .toggle-btn .label { display: none; }
+    .head-avatar { width: 34px; height: 34px; font-size: 16px; }
+  }
+
+  /* ============ 布局 ============ */
+  .layout {
+    margin-top: var(--topbar-h);
+    min-height: calc(100vh - var(--topbar-h));
+    position: relative;
+  }
+
+  /* ============ 左侧目录 ============ */
+  aside.sidebar {
+    position: fixed;
+    top: var(--topbar-h);
+    bottom: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    overflow-y: auto;
+    padding: 20px 0 40px;
+    z-index: 90;
+    transition: transform .3s cubic-bezier(.4,0,.2,1),
+                box-shadow .3s;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.04);
+  }
+  aside.sidebar::-webkit-scrollbar { width: 6px; }
+  aside.sidebar::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+  aside.sidebar::-webkit-scrollbar-thumb:hover { background: #ccc; }
+
+  body.sidebar-closed aside.sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  aside.sidebar .sidebar-header {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 16px;
+  }
+  aside.sidebar .sidebar-header h2 {
+    margin: 0 0 4px; font-size: 16px; letter-spacing: 2px;
+  }
+  aside.sidebar .sidebar-header p {
+    margin: 0; font-size: 12px; color: var(--muted);
+  }
+  aside.sidebar h4 {
+    font-size: 11px; letter-spacing: 2px; color: var(--muted);
+    margin: 22px 20px 8px; font-weight: normal;
+    text-transform: uppercase;
+  }
+  aside.sidebar h4:first-of-type { margin-top: 0; }
+  aside.sidebar a.nav-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px;
+    color: var(--ink); text-decoration: none;
+    font-size: 14px; transition: all .15s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+  aside.sidebar a.nav-link:hover {
+    background: var(--gold-soft); color: var(--gold-dark);
+  }
+  aside.sidebar a.nav-link.active {
+    background: var(--gold-soft); color: var(--gold-dark);
+    border-left-color: var(--gold); font-weight: bold;
+  }
+  aside.sidebar a.nav-link .num {
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 6px;
+    background: #f3f0ea; color: var(--muted);
+    font-family: "JetBrains Mono", monospace; font-size: 11px;
+    transition: all .15s;
+  }
+  aside.sidebar a.nav-link.active .num {
+    background: var(--gold); color: #fff;
+  }
+  aside.sidebar a.nav-link:hover .num { background: #f0d88a; color: var(--gold-dark); }
+
+  /* ============ 主内容 ============ */
+  main.content {
+    margin-left: var(--sidebar-w);
+    padding: 40px 56px 100px;
+    max-width: 1040px;
+    transition: margin-left .3s cubic-bezier(.4,0,.2,1);
+  }
+  body.sidebar-closed main.content {
+    margin-left: 0;
+    max-width: 1200px;
+  }
+
+  .chapter { display: none; }
+  .chapter.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  main.content h1 {
+    font-size: 32px; letter-spacing: 4px; margin: 0 0 8px;
+    border-left: 5px solid var(--gold); padding-left: 20px;
+  }
+  main.content .chapter-desc {
+    color: var(--muted); font-size: 15px;
+    margin: 0 0 40px; padding-left: 25px;
+  }
+  main.content h2 {
+    font-size: 22px; letter-spacing: 2px; margin: 44px 0 16px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  }
+  main.content h3 {
+    font-size: 17px; margin: 28px 0 12px;
+    color: #444; letter-spacing: 1px;
+  }
+  main.content p { margin: 0 0 14px; }
+  main.content ul, main.content ol { padding-left: 24px; margin: 0 0 14px; }
+  main.content li { margin-bottom: 8px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .card {
+    background: #fff; border: 1px solid var(--rule); border-radius: 8px;
+    padding: 18px 22px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 15px; }
+  .card p { margin: 0; color: var(--muted); font-size: 13px; }
+  .card .tag {
+    display: inline-block; font-size: 12px; padding: 2px 8px;
+    border-radius: 10px; margin-bottom: 10px; letter-spacing: 1px;
+  }
+  .tag.gold { background: var(--gold-soft); color: var(--gold-dark); }
+  .tag.blue { background: var(--blue-soft); color: var(--blue); }
+  .tag.green { background: var(--green-soft); color: var(--green); }
+  .tag.purple { background: var(--purple-soft); color: var(--purple); }
+  .tag.pink { background: var(--pink-soft); color: var(--pink); }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; margin: 16px 0; }
+  .tbl th, .tbl td { border: 1px solid var(--rule); padding: 9px 14px; text-align: left; vertical-align: top; }
+  .tbl th { background: #f3f0ea; font-weight: normal; color: #555; font-size: 13px; }
+  .tbl tr:hover td { background: #fdfbf5; }
+  .tbl .latin {
+    font-family: "JetBrains Mono", monospace; color: var(--blue);
+    font-weight: 500; font-size: 15px; white-space: nowrap;
+  }
+  .tbl .glyph {
+    font-family: "JetBrains Mono", "DejaVu Sans", monospace;
+    font-size: 18px; color: #444; text-align: center;
+  }
+  .tbl .cat {
+    font-size: 11px; padding: 2px 7px; border-radius: 10px;
+    background: var(--gold-soft); color: var(--gold-dark); white-space: nowrap;
+  }
+
+  .example {
+    background: #f7f5f0; border-radius: 6px; padding: 14px 18px;
+    margin: 12px 0; font-size: 16px;
+  }
+  .example .pefon {
+    font-family: "JetBrains Mono", monospace; color: var(--blue);
+    font-weight: 500; letter-spacing: 1px;
+  }
+  .example .zh { color: #555; margin-top: 4px; font-size: 14px; }
+
+  .box {
+    border-radius: 6px; padding: 14px 18px; margin: 16px 0;
+    border-left: 4px solid; font-size: 15px;
+  }
+  .box .label {
+    font-weight: bold; font-size: 13px; letter-spacing: 1px;
+    display: block; margin-bottom: 6px;
+  }
+  .box.tip { background: var(--gold-soft); border-color: var(--gold); }
+  .box.tip .label { color: var(--gold-dark); }
+  .box.ext { background: var(--blue-soft); border-color: var(--blue); }
+  .box.ext .label { color: var(--blue); }
+  .box.think { background: var(--green-soft); border-color: var(--green); }
+  .box.think .label { color: var(--green); }
+
+  .glyph-table {
+    width: 100%; border-collapse: collapse; background: #1a1a1a;
+    font-family: "JetBrains Mono", "DejaVu Sans", monospace;
+    font-size: 18px; color: #f5f2ea; border-radius: 8px;
+    overflow: hidden; margin: 16px 0;
+  }
+  .glyph-table th, .glyph-table td {
+    border: 1px solid #333; padding: 10px 6px;
+    text-align: center; min-width: 44px;
+  }
+  .glyph-table th { background: #111; color: var(--gold); font-weight: normal; font-size: 15px; }
+  .glyph-table td:first-child { background: #111; color: var(--gold); font-weight: normal; }
+  .glyph-table .cell { transition: background .15s; }
+  .glyph-table .cell:hover { background: #333; }
+
+  .chapter-nav {
+    display: flex; justify-content: space-between; gap: 12px;
+    margin-top: 60px; padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .chapter-nav button {
+    padding: 12px 24px; border: 1px solid var(--rule);
+    background: #fff; border-radius: 8px; cursor: pointer;
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    transition: all .15s; text-align: left; min-width: 160px;
+  }
+  .chapter-nav button:hover:not(:disabled) {
+    background: var(--gold-soft); border-color: var(--gold); color: var(--gold-dark);
+  }
+  .chapter-nav button .lbl {
+    display: block; font-size: 11px; color: var(--muted); letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .chapter-nav button.right { text-align: right; }
+  .chapter-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .overlay {
+    display: none;
+    position: fixed; inset: var(--topbar-h) 0 0 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 85;
+  }
+  body.sidebar-open-mobile .overlay { display: block; }
+
+  footer.page-footer {
+    background: #2b2b2b; color: #a8a396;
+    padding: 40px 24px; text-align: center; font-size: 13px;
+    margin-left: var(--sidebar-w);
+    transition: margin-left .3s cubic-bezier(.4,0,.2,1);
+  }
+  body.sidebar-closed footer.page-footer { margin-left: 0; }
+  footer.page-footer .pefon {
+    color: var(--gold); font-family: "JetBrains Mono", monospace;
+    letter-spacing: 3px; font-size: 16px;
+  }
+
+  @media (max-width: 900px) {
+    main.content { padding: 24px 20px 80px; max-width: 100%; }
+    .chapter-nav button { min-width: 0; flex: 1; }
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+</style>
+</head>
+<body>
+
+<!-- ============ 全局固定顶栏 ============ -->
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      配<span>分</span>语<small>PEFON</small>
+    </a>
+    <button class="toggle-btn" id="toggleSidebar" title="切换目录">
+      <span class="bars"><i></i><i></i><i></i></span>
+      <span class="label">目录</span>
+    </button>
+    <div class="links">
+      <a href="index.html">首页</a>
+      <a href="studing.html" class="active">学习</a>
+      <a href="translating.html">翻译</a>
+      <a href="head.html" class="head-link" title="关于作者">
+        <span class="head-avatar">
+          <img src="cat.png" alt="Cerasumn">
+        </span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>学习目录</h2>
+      <p>PEFON 统合教程 0.2.1</p>
+    </div>
+
+    <h4>第一章 · 综述</h4>
+    <a class="nav-link active" data-chapter="c0"><span class="num">00</span>配分语是什么</a>
+    <a class="nav-link" data-chapter="c1"><span class="num">01</span>字母与读音</a>
+    <a class="nav-link" data-chapter="c2"><span class="num">02</span>音节与合法</a>
+    <a class="nav-link" data-chapter="c3"><span class="num">03</span>象形字表</a>
+
+    <h4>第二章 · 语法</h4>
+    <a class="nav-link" data-chapter="c4"><span class="num">04</span>你我他</a>
+    <a class="nav-link" data-chapter="c5"><span class="num">05</span>这是</a>
+    <a class="nav-link" data-chapter="c6"><span class="num">06</span>朋友！</a>
+    <a class="nav-link" data-chapter="c7"><span class="num">07</span>词性空间</a>
+
+    <h4>第三章 · 进阶</h4>
+    <a class="nav-link" data-chapter="c8"><span class="num">08</span>n 形式</a>
+    <a class="nav-link" data-chapter="c9"><span class="num">09</span>外来语</a>
+    <a class="nav-link" data-chapter="c10"><span class="num">10</span>标点规范</a>
+
+    <h4>第四章 · 词汇</h4>
+    <a class="nav-link" data-chapter="c11"><span class="num">11</span>词汇总表</a>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="content" id="mainContent">
+
+    <section class="chapter active" id="c0">
+      <h1>配分语是什么</h1>
+      <p class="chapter-desc">在学之前，先搞懂它是什么、为什么、怎么用。</p>
+
+      <p>配分语（PEFON）是由二项式顺铂团队中的 LJG 于 2026 年 7 月 29 日至 31 日，三天时间设计出的极简人造语言。目的是用更少的词汇、更简单的学习难度、更自然的语法，构建世界最简单的语言——一次对极简主义的践行。</p>
+
+      <div class="cards">
+        <div class="card"><span class="tag gold">极简</span><h3>16 个字母</h3><p>辅音 11 个，元音 5 个，坚持一音一标。没有清浊对立，没有送气与否的区别。</p></div>
+        <div class="card"><span class="tag blue">词汇</span><h3>词汇系统化</h3><p>按名词、动词、修饰语、语法词分类。n 形式让每个词衍生出对应的新词。</p></div>
+        <div class="card"><span class="tag green">语法</span><h3>粒子词框定</h3><p>用 a / e / an / en / o / on / u 等标记谓语、宾语、表语、祈使、被动。</p></div>
+        <div class="card"><span class="tag purple">书写</span><h3>两套文字</h3><p>拉丁写法 walin 与象形写法 welin，都由左往右书写。</p></div>
+        <div class="card"><span class="tag pink">思想</span><h3>无必要不区分</h3><p>只要不造成歧义，就不用过分区分词性、词义。词是“软”的。</p></div>
+        <div class="card"><span class="tag gold">目标</span><h3>更少的词汇，更简单的难度</h3><p>用最少的词构建世界最简单的语言。</p></div>
+      </div>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        配分语官方网站正在备案，可能无法访问。可以加入 QQ 群 673029418 讨论交流，或在 Bilibili 搜索“二项式顺铂”获取教程与宣传视频。
+      </div>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        配分语由四个部分组成，共用配分词表和底层逻辑：<br>
+        <strong>偏分 penfon</strong>：配分交流语<br>
+        <strong>综分 sonfon</strong>：配分书面语<br>
+        <strong>切分 sefon</strong>：配分专业语<br>
+        <strong>噻吩 safon</strong>：配分社区语<br>
+        本教程主要讲偏分部分。
+      </div>
+    </section>
+
+    <section class="chapter" id="c1">
+      <h1>字母与读音</h1>
+      <p class="chapter-desc">16 个基本字母，坚持一音一标。</p>
+
+      <p>配分语只有 16 个基本字母。下面是 4×4 字母表。</p>
+
+      <h2>辅音</h2>
+      <table class="tbl">
+        <thead><tr><th>发音位置</th><th>齿前</th><th>齿</th><th>齿后</th></tr></thead>
+        <tbody>
+          <tr><td>爆发音</td><td class="latin">p</td><td class="latin">t</td><td class="latin">k</td></tr>
+          <tr><td>摩擦音</td><td class="latin">f</td><td class="latin">s</td><td class="latin">h</td></tr>
+          <tr><td>鼻腔音</td><td class="latin">m</td><td class="latin">n</td><td class="latin">l</td></tr>
+          <tr><td>元辅音</td><td class="latin">w</td><td class="latin">y</td><td class="latin">ø（无辅音）</td></tr>
+        </tbody>
+      </table>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        n 是比较特殊的辅音，可以作一个音节的结束音。当 n 位于音节末尾时，会根据后一个音节自由切换读音，例如 <span class="latin">santa</span> 里的 n 就是汉语的后鼻音 -ng。
+      </div>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        虽然 l 的标准发音为“齿后鼻音”，但社区中大家热衷把它读作边音（汉语与英语中的“L”）。爆发音、摩擦音的清浊不分，是配分语辅音系统的一大特点。
+      </div>
+
+      <h2>元音</h2>
+      <table class="tbl">
+        <thead><tr><th>字母</th><th>a</th><th>e</th><th>i</th><th>o</th><th>u</th></tr></thead>
+        <tbody><tr><td>汉语拟音</td><td>啊</td><td>耶的韵母</td><td>衣</td><td>哦</td><td>巫</td></tr></tbody>
+      </table>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        e 的读音并不是“额”，而是“页”ye 的韵母读音。
+      </div>
+
+      <h2>结音变读</h2>
+      <p>结音即结束音，此音节部分只有一个 n，但可以根据后一个音节读什么自由切换读音。</p>
+      <table class="tbl">
+        <tr><th>写法</th><th>通常读法</th></tr>
+        <tr><td class="latin">san</td><td>san</td></tr>
+        <tr><td class="latin">sam</td><td>sam</td></tr>
+        <tr><td class="latin">sas</td><td>sas</td></tr>
+        <tr><td class="latin">sans</td><td>sans</td></tr>
+        <tr><td class="latin">sanka</td><td>sanka</td></tr>
+      </table>
+
+      <div class="box think">
+        <span class="label">思考</span>
+        想一想：n 在这些音前为何会变读为不同的音？试着发音后总结规律，这个变读规则复杂吗？
+      </div>
+    </section>
+
+    <section class="chapter" id="c2">
+      <h1>音节与合法</h1>
+      <p class="chapter-desc">每个音节必须遵循（辅音）+ 元音 +（鼻音）的规则。</p>
+
+      <p>故配分语一共有四种音节模式：</p>
+
+      <table class="tbl">
+        <thead><tr><th>音节模式</th><th>例</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>CV</td><td class="latin">pa</td><td>辅音 + 元音</td></tr>
+          <tr><td>V</td><td class="latin">a</td><td>单独元音</td></tr>
+          <tr><td>CVn</td><td class="latin">pan</td><td>辅音 + 元音 + 鼻音</td></tr>
+          <tr><td>Vn</td><td class="latin">an</td><td>元音 + 鼻音</td></tr>
+        </tbody>
+      </table>
+
+      <p>注：C = 辅音，V = 元音，n = 鼻音（韵尾）。</p>
+
+      <p>但是不难发现，<span class="latin">wu</span> 与 <span class="latin">u</span>、<span class="latin">yi</span> 与 <span class="latin">i</span> 很难区分，故我们不把它们和它们的衍生音节看作合法音节。</p>
+
+      <h2>4 大不合法音节</h2>
+      <table class="tbl">
+        <tr><th>wu</th><th>wun</th><th>yi</th><th>yin</th></tr>
+        <tr><td>无法与 u 区分</td><td>无法与 un 区分</td><td>无法与 i 区分</td><td>无法与 in 区分</td></tr>
+      </table>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        非法音节在非正式交流时被赋予了独特含义，如“配分语教科书”为 yi。配分语所有的词都是单音节的，因此对中文使用者很友好。
+      </div>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        我们之后可能会学到单个 n 所成的特殊语气词（读作“嗯”的鼻音部分），它不属于音节，所以进而不属于词的范畴。配分语允许连读，但前提是清晰，连读速读不作规范。
+      </div>
+    </section>
+
+    <section class="chapter" id="c3">
+      <h1>象形字表</h1>
+      <p class="chapter-desc">横向是辅音，纵向是元音，交叉格子是对应音节的象形写法。</p>
+
+      <div style="overflow-x:auto;">
+        <table class="glyph-table" id="glyphTable"></table>
+      </div>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        象形写法是音节文字，每个象形字表示一个音节（一般 1~2 个字母），故叫 <span class="latin">welin</span>（两个字母的文字）。
+      </div>
+
+      <h2>七种字形来源</h2>
+      <div class="cards">
+        <div class="card"><span class="tag gold">来源一</span><h3>事物的象形</h3><p>如 pe，意思是“好的”，字形像笑脸。</p></div>
+        <div class="card"><span class="tag gold">来源二</span><h3>事物部分的象形</h3><p>如 fi，意思是“人”，字形像人头。</p></div>
+        <div class="card"><span class="tag gold">来源三</span><h3>拉丁字母的变形</h3><p>如 lo，和意思无关，从首字母 L 变形而来。</p></div>
+        <div class="card"><span class="tag gold">来源四</span><h3>以语法作用为核心</h3><p>如 a，语法作用为“主谓连接”，故一条竖线。</p></div>
+        <div class="card"><span class="tag gold">来源五</span><h3>道本图的衍生</h3><p>如 wo，既是 W 的变形，也是道本语 wile 的道本图。</p></div>
+        <div class="card"><span class="tag gold">来源六</span><h3>汉字的衍生</h3><p>如 ya，意思是“太阳”，像中文的“日”。</p></div>
+        <div class="card"><span class="tag gold">来源七</span><h3>约定俗成的符号</h3><p>如 na，形状是数学的“无限”符号，表示“所有”。</p></div>
+      </div>
+
+      <h2>n 形式写法</h2>
+      <div class="box tip">
+        <span class="label">提示</span>
+        象形书写系统并未向 -n 词多做字形。n 形式一般为在无 n 结尾形式下面加短横或点。例如：
+      </div>
+      <div class="example">
+        <div class="pefon">fo</div>
+        <div class="zh">意思是嘴巴 / 食物 / 吃</div>
+      </div>
+      <div class="example">
+        <div class="pefon">fon</div>
+        <div class="zh">和 fo 有词义联系：意为语言 / 演讲 / 说……（字形在 fo 下方加一横）</div>
+      </div>
+    </section>
+
+    <section class="chapter" id="c4">
+      <h1>第一课 · 你我他</h1>
+      <p class="chapter-desc">配分语最基本的句子结构：主 - 谓 - 宾。</p>
+
+      <p>粒子词 <span class="latin">a</span> 放在谓语前，<span class="latin">e</span> 放在宾语前。</p>
+
+      <div class="example">
+        <div class="pefon">fin a pu.</div>
+        <div class="zh">狼来了。（动物 + a + 来）</div>
+      </div>
+      <div class="example">
+        <div class="pefon">hi a fo e ni.</div>
+        <div class="zh">你吃这个。（你 + a + 吃 + e + 这）</div>
+      </div>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        主语前面的粒子词 <span class="latin">o</span>（旧教程是 <span class="latin">on</span>）通常省略。此处没有指明动物的具体类别，恰恰说明动物的种类在这一句话不重要——老鼠来了 / 蜜蜂来了 / 大象来了都没有问题。这是配分语的思想之一。
+      </div>
+
+      <div class="box think">
+        <span class="label">思考</span>
+        为什么 <span class="latin">a</span> 是一条竖线，<span class="latin">e</span> 是两条竖线？<br>
+        （提示：配分语最主要的句子结构是主-谓-宾，所以 a 大多数情况下是句子的第一个分隔符。）
+      </div>
+
+      <h2>词汇记忆</h2>
+      <table class="tbl">
+        <tr><td class="latin">fi</td><td>人</td></tr>
+        <tr><td class="latin">fin</td><td>动物，如狗/猫/鸟/虫子/兔子/乌龟等，一般不包括人</td></tr>
+        <tr><td class="latin">si</td><td>他 / 她 / 它</td></tr>
+        <tr><td class="latin">hi</td><td>你</td></tr>
+        <tr><td class="latin">mi</td><td>我</td></tr>
+        <tr><td class="latin">ni</td><td>这，这个</td></tr>
+        <tr><td class="latin">fo</td><td>吃</td></tr>
+        <tr><td class="latin">no</td><td>看见</td></tr>
+        <tr><td class="latin">pu</td><td>到来</td></tr>
+      </table>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        其实主语也有粒子词 o（旧教程是 on），但是在句子头部省略是最好的写法。
+      </div>
+
+      <h2>练习</h2>
+      <p>把下面中文翻译成配分语：</p>
+      <ul>
+        <li>你来了。</li>
+        <li>他看见你。</li>
+        <li>这是人。</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="c5">
+      <h1>第二课 · 这是</h1>
+      <p class="chapter-desc">学习配分语的“是”句型。</p>
+
+      <p>今天我们学习配分语的“是”句型，有另外两个粒子词 <span class="latin">an</span> 与 <span class="latin">en</span>。它们本身都有“是”的意思，但是语法作用不一样。</p>
+
+      <ul>
+        <li><span class="latin">an</span> 后面接表语（饰词 / 形容词）</li>
+        <li><span class="latin">en</span> 后面接宾语（名词）</li>
+      </ul>
+
+      <div class="example">
+        <div class="pefon">fin an fa.</div>
+        <div class="zh">动物很大。</div>
+      </div>
+      <div class="example">
+        <div class="pefon">ni en fi.</div>
+        <div class="zh">这是人。</div>
+      </div>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        <span class="latin">en</span> 的旧写法是 <span class="latin">an e</span>，比较啰嗦，所以后来合并了。<span class="latin">an</span> 和 <span class="latin">en</span> 的区分是很有必要的，后面的课程就会讲到。
+      </div>
+
+      <h2>词汇记忆</h2>
+      <table class="tbl">
+        <tr><td class="latin">pe</td><td>好的</td></tr>
+        <tr><td class="latin">pa</td><td>坏的</td></tr>
+        <tr><td class="latin">an</td><td>“是”的表语起头粒子词</td></tr>
+        <tr><td class="latin">en</td><td>“是”的宾语起头粒子词</td></tr>
+        <tr><td class="latin">fa</td><td>大的</td></tr>
+        <tr><td class="latin">fe</td><td>小的</td></tr>
+      </table>
+
+      <h2>练习</h2>
+      <p>给下列中文句子试着加入配分语的 a / e / an / en 粒子词：</p>
+      <ul>
+        <li>小鸟吃苹果。</li>
+        <li>虫子起床了。</li>
+        <li>我挺高的。</li>
+        <li>这是什么意思？</li>
+      </ul>
+      <p>翻译下面句子：</p>
+      <ul>
+        <li>你来了。</li>
+        <li>他看见你。</li>
+        <li>他是好人。</li>
+      </ul>
+    </section>
+
+    <section class="chapter" id="c6">
+      <h1>第三课 · 朋友！</h1>
+      <p class="chapter-desc">学习饰词的另一种用法：作成分的修饰语。</p>
+
+      <h2>名词饰语</h2>
+      <p>饰词放在名词前面，构成“名词饰语”。不同于简单的叠加，配分语的这方面思维不太一样。</p>
+
+      <div class="example"><div class="pefon">pe fi</div><div class="zh">朋友（好 + 人）</div></div>
+      <div class="example"><div class="pefon">pa fi</div><div class="zh">敌人（坏 + 人）</div></div>
+      <div class="example"><div class="pefon">fe fin</div><div class="zh">虫子（小 + 动物）</div></div>
+      <div class="example"><div class="pefon">fa fi</div><div class="zh">成人（大 + 人）</div></div>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        名词连同它前面的饰语一起作为一个主语或宾语成分。例如 <span class="latin">pefin</span>（好的动物）相当于一个概念：益虫。
+      </div>
+
+      <h2>动词饰语与饰词饰语</h2>
+      <p>动词饰语就是我们常说的“副词”中的一种。修饰动词时有一些意思有“形变而神不变”的变化。</p>
+
+      <div class="example"><div class="pefon">si a pefan e fafin.</div><div class="zh">他十分了解大的动物。</div></div>
+      <div class="example"><div class="pefon">hi an henpe.</div><div class="zh">你很好。</div></div>
+
+      <div class="box think">
+        <span class="label">思考</span>
+        hen 这个“很”刚好和汉语的很像，在学习中挖掘“巧合”是可以让你事半功倍的。
+      </div>
+
+      <h2>名词-饰词词性转换</h2>
+      <p>其实配分语的词除了纯语法词外没有特定词性，由它在句子的位置和所充当的成分决定。</p>
+
+      <table class="tbl">
+        <tr><td class="latin">ni</td><td>这的，近的</td></tr>
+        <tr><td class="latin">mi</td><td>我的</td></tr>
+        <tr><td class="latin">si</td><td>它/他/她的</td></tr>
+        <tr><td class="latin">hi</td><td>你的</td></tr>
+        <tr><td class="latin">fi</td><td>与人有关的，人道的</td></tr>
+        <tr><td class="latin">fin</td><td>与兽有关的，残酷的</td></tr>
+      </table>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        配分语也可以光说“好人”而不提“朋友”，为 <span class="latin">pe li fi</span>。使用以后很重要的语法词 <span class="latin">li</span> 来打断一个词的整体画面感。
+      </div>
+    </section>
+
+    <section class="chapter" id="c7">
+      <h1>第四课 · 词性空间</h1>
+      <p class="chapter-desc">讨论 AB 与 BA 的饰语-后词词组之间的差别。</p>
+
+      <p>这个问题的本质是配分语的词性转换。</p>
+
+      <h2>词性空间</h2>
+      <p>配分语的单个词是由不止一个意义组成的；也是由不止一个词性组成的。</p>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        被修饰的词称为“后词”“被修饰词”或“中心词”等。词性空间是配分语生造的语法术语，在其他语言中实在少见。
+      </div>
+
+      <table class="tbl">
+        <thead><tr><th>词</th><th>动词义</th><th>名词义</th><th>饰词义</th></tr></thead>
+        <tbody>
+          <tr><td class="latin">fo</td><td>吃</td><td>嘴，语言</td><td>味觉上的</td></tr>
+          <tr><td class="latin">fi</td><td>工作</td><td>人</td><td>人造的</td></tr>
+          <tr><td class="latin">fa</td><td>出现</td><td>体积</td><td>大的</td></tr>
+          <tr><td class="latin">fe</td><td>减轻，减</td><td>花</td><td>小，新，年幼</td></tr>
+          <tr><td class="latin">fin</td><td>打击</td><td>兽</td><td>残酷的</td></tr>
+          <tr><td class="latin">hen</td><td>充，锻炼</td><td>力气，电</td><td>很，狠，快的</td></tr>
+        </tbody>
+      </table>
+
+      <p>说回 AB 与 BA 型的语义差别，实际上是由于修饰语词与后词互换时，词性也会互换导致的一种意义改变。</p>
+
+      <div class="example"><div class="pefon">fa fin</div><div class="zh">大的动物，如大象</div></div>
+      <div class="example"><div class="pefon">fin fa</div><div class="zh">动物的“大”，即动物的大小 / 体积</div></div>
+      <div class="example"><div class="pefon">fe fi</div><div class="zh">小孩 / 矮人</div></div>
+      <div class="example"><div class="pefon">fife</div><div class="zh">人造的花，假花</div></div>
+
+      <h2>词性填充思想</h2>
+      <p>配分语词的各个词性看着很“残废”，想要表达一种词义很有可能位于其他的词性。</p>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        在后续的学习中，其实使用语法词 li/u/un 等是可以严格区分地表述的。
+      </div>
+
+      <div class="box tip">
+        <span class="label">提示</span>
+        我们目前上手的是偏分部分。其思想中很重要的一部分是“无必要不区分”。只要不造成不可忽视的歧义，就不用过分地区分一个词在不同情况/不同词性下的词义。
+      </div>
+    </section>
+
+    <section class="chapter" id="c8">
+      <h1>n 形式</h1>
+      <p class="chapter-desc">每个无 n 结尾的词都有对应的 n 词，意思一定有简单自然的映射关系。</p>
+
+      <p>可以分为以下七类：</p>
+
+      <div class="cards">
+        <div class="card"><span class="tag gold">延申</span><h3>fo → fon</h3><p>同一东西的两面。fo 是“吃”，fon 是“说”——动作的介质仍然是嘴巴。</p></div>
+        <div class="card"><span class="tag pink">对立</span><h3>fi → fin</h3><p>两者正好相反。fi 是“人”，fin 是“动物”。</p></div>
+        <div class="card"><span class="tag green">类推</span><h3>ki → kin</h3><p>由相似的联想推得。ki 是“气体”，kin 是“火”——火势向上蔓延，和气体同理。</p></div>
+        <div class="card"><span class="tag purple">深化</span><h3>i → in</h3><p>同一个方向，程度更深。i 是“转，变得”，in 是“但是，反转”。</p></div>
+        <div class="card"><span class="tag blue">先后</span><h3>te → ten</h3><p>先有前者，后有后者。te 是“下，压”，ten 是“压爆、反抗”。</p></div>
+        <div class="card"><span class="tag gold">中例</span><h3>ko → kon</h3><p>取常见例子的特点。ko 是“液体”，kon 是“混乱的”——液体中最常见的例子是“酒”。</p></div>
+        <div class="card"><span class="tag green">抽象</span><h3>ke → ken</h3><p>从具体而抽象。ke 是“坑、容器”，ken 是“安全、舒适”——从“待在坑里”抽象而来。</p></div>
+      </div>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        如果不要求精细分类（很多情况下一个无 n 词与 n 词的词组可以用不止一种方式解释），可以简单分为四类：<br>
+        <strong>相反</strong>：对立和一些延伸；<br>
+        <strong>联想</strong>：延申，类推，中例；<br>
+        <strong>沉下</strong>：深化，先后；<br>
+        <strong>抽象</strong>。
+      </div>
+    </section>
+
+    <section class="chapter" id="c9">
+      <h1>外来语</h1>
+      <p class="chapter-desc">思考 → 找音 → 拟音 → 合理化。</p>
+
+      <p>配分语的外来语，写法上通常在象形字用 [ ] 框起，在拉丁写法中用大写字母来与普通文本区分。</p>
+
+      <div class="box ext">
+        <span class="label">拓展</span>
+        不止外来语，常见的“不按词义来”的名字/拟声词等也会同样区分。例如 <span class="latin">MIMI</span> 指猫，或者叫如“咪咪”的事物等。
+      </div>
+
+      <h2>思考</h2>
+      <div class="box think">
+        <span class="label">思考</span>
+        外来语固然是语言的一部分，然而配分语极力减少它的表达，因为它可能会渐令配分语的语音独立性被稀释。<br><br>
+        这个外来语真的重要吗？在聊天中使用它会变得更好吗？不使用它就不行吗？它会引发新的歧义吗？<br><br>
+        原则是：<br>
+        · 听话人或读者需能听懂，不易搞混<br>
+        · 有一定要用外来语的理由或者思想在其中
+      </div>
+
+      <h2>找音</h2>
+      <p>配分语使用外来语以“完全看读音”而非任何字形或含义出发。找外来语的原音时，就得考虑这个外来语原本该选哪个语言的。结合配分语的思想，有了以下几条推论：</p>
+
+      <ol>
+        <li>如果一个词语或者一句话是最常用的招呼语等，则选择各个语言都可以，如加油（TAYO）、二人（KONITIWA）、hello（HELO）等。</li>
+        <li>如果一个词语带有一个国家/语言的特色，那么就选择这个特定的语言，如中国（SONKO）、樱花（SAKULA）、美洲（AMELIKA）等。</li>
+        <li>如果一个词可以由第二条规则解释部分，则不加词，如汉语 = 中国·语言 =（SONKOfon）。</li>
+        <li>如果一个词很普通，或者不止一个语言的这个词都经常被使用，那么就从世界目前主流语言或听话者可听懂的语言取，如原神（YENSON / KENSIN）。</li>
+      </ol>
+
+      <h2>拟音</h2>
+      <p>配分语的拟音没有硬性标准，但有一些成体系的拟音方式与方案。如中文，目前有 At_Yeso 的宽式与 LJG 的严式拟音法。宽和严对应两种思路：前者追求音的相似，后者则想方设法在音节数的对应下减少重码率。如油条 [you tiao] 的音译就应为 YUTO。</p>
+
+      <h2>合理化</h2>
+      <p>只需要避免会导致混淆的读音或不合理的字母组合，如 YI / WU / YIN / WUN 音节和 NN / NM 字母组合就行了。</p>
+    </section>
+
+    <section class="chapter" id="c10">
+      <h1>标点与大小写规范</h1>
+      <p class="chapter-desc">配分语的标点较为宽松。</p>
+
+      <table class="tbl">
+        <thead><tr><th>符号</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="glyph">,</td><td>逗号，表示没有结束的句子停顿，有语法意义，兼做中文顿号</td></tr>
+          <tr><td class="glyph">.</td><td>句号，表示句子间的分割，有语法意义</td></tr>
+          <tr><td class="glyph">!</td><td>感叹号，表示强调和惊叹</td></tr>
+          <tr><td class="glyph">?</td><td>问号</td></tr>
+          <tr><td class="glyph">:</td><td>冒号，表示列举或从句连接</td></tr>
+          <tr><td class="glyph">"ko"</td><td>引号，兼做中文书名号</td></tr>
+          <tr><td class="glyph">(ko)</td><td>括号</td></tr>
+          <tr><td class="glyph">'</td><td>撇号，用于音节的分割</td></tr>
+          <tr><td class="glyph">[KO]</td><td>方括号用于书写外来语的拟音，或名字等</td></tr>
+          <tr><td class="glyph">-</td><td>横号，用于词的连接和分割</td></tr>
+          <tr><td class="glyph">/</td><td>斜号，用法类似中文顿号或词的分割</td></tr>
+          <tr><td class="glyph">;</td><td>分号</td></tr>
+        </tbody>
+      </table>
+
+      <h2>大小写规范</h2>
+      <div class="box tip">
+        <span class="label">提示</span>
+        外来语的书写规范有多种，本教程使用“全部大写”的方式。拉丁写法中，非外来语即使在句子之首也要全部使用小写。
+      </div>
+    </section>
+
+    <section class="chapter" id="c11">
+      <h1>词汇总表 · 新词汇表 1.5</h1>
+      <p class="chapter-desc">按词性分类：名词 / 不及物动词 / 及物动词 / 名词修饰语 / 动词修饰语 / 语法词 / 介词起头。</p>
+
+      <input type="text" id="wordSearch" placeholder="搜索拉丁或释义…"
+        style="width:100%; padding:10px 14px; border:1px solid var(--rule); border-radius:6px; font-size:14px; font-family:inherit; margin-bottom:16px;">
+
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th style="width:50px;">象形</th>
+              <th style="width:60px;">拉丁</th>
+              <th>名词</th>
+              <th>不及物动词</th>
+              <th>及物动词</th>
+              <th>名词修饰语</th>
+              <th>动词修饰语</th>
+              <th>语法词</th>
+              <th>介词起头</th>
+            </tr>
+          </thead>
+          <tbody id="wordBody"></tbody>
+        </table>
+      </div>
+      <p id="wordCount" style="color:var(--muted); font-size:13px; margin-top:12px;"></p>
+    </section>
+
+    <div class="chapter-nav">
+      <button id="prevBtn" class="left"><span class="lbl">← 上一页</span><span id="prevTitle">—</span></button>
+      <button id="nextBtn" class="right"><span class="lbl">下一页 →</span><span id="nextTitle">—</span></button>
+    </div>
+
+  </main>
+</div>
+
+<footer class="page-footer">
+  <div class="pefon">mi a fan e pefon.</div>
+  <p style="margin-top:12px;">配分语学习站 · 根据《配分统合教程 0.2.1》与《新词汇表 1.5》整理</p>
+  <p style="font-size:12px; color:#6a6558; margin-top:8px;">官方 QQ 群：673029418</p>
+</footer>
+
+<script>
+const GLYPH_TABLE = {
+  a: { p:'⌒', t:'∧', k:'⌐', f:'⌣', s:'⫽', h:'○', m:'Ω', n:'∞', l:'⊥', w:'I', y:'⊖', 'ø':'|' },
+  e: { p:'⌣', t:'V', k:'⌐', f:'+', s:'Y', h:'♄', m:'#', n:'✕', l:'⨥', w:'II', y:'◇', 'ø':'||' },
+  i: { p:'>', t:'✠', k:'§', f:'O', s:'+', h:'⊥', m:'T', n:'↓', l:'⌐', w:'≠', y:'⋉', 'ø':'⊃' },
+  o: { p:'=', t:'⊤', k:'≈', f:'⊃', s:'Ɔ', h:'♡', m:'⊓', n:'⊙', l:'L', w:'ω', y:'⊣', 'ø':'⊢' },
+  u: { p:'<', t:'⊕', k:'□', f:'ε', s:'3', h:'#', m:'⌒', n:'⊕', l:'⌐', w:'C', y:'⌐', 'ø':'⊣' },
+};
+(function renderGlyphTable() {
+  const el = document.getElementById('glyphTable');
+  if (!el) return;
+  const consOrder = ['p','t','k','f','s','h','m','n','l','w','y','ø'];
+  const vowelOrder = ['a','e','i','o','u'];
+  let thead = '<tr><th>ø</th>';
+  consOrder.forEach(c => thead += `<th>${c}</th>`);
+  thead += '</tr>';
+  let tbody = '';
+  vowelOrder.forEach(v => {
+    tbody += `<tr><td>${v}</td>`;
+    consOrder.forEach(c => {
+      const g = GLYPH_TABLE[v][c];
+      const syl = c === 'ø' ? v : c + v;
+      tbody += `<td class="cell" title="${syl}">${g}</td>`;
+    });
+    tbody += '</tr>';
+  });
+  el.innerHTML = thead + tbody;
+})();
+
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const body = document.body;
+
+function initSidebar() {
+  if (window.innerWidth < 900) {
+    body.classList.add('sidebar-closed');
+  } else {
+    body.classList.remove('sidebar-closed');
+  }
+}
+initSidebar();
+
+document.getElementById('toggleSidebar').onclick = () => {
+  body.classList.toggle('sidebar-closed');
+  if (window.innerWidth < 900 && !body.classList.contains('sidebar-closed')) {
+    body.classList.add('sidebar-open-mobile');
+  } else {
+    body.classList.remove('sidebar-open-mobile');
+  }
+};
+
+overlay.onclick = () => {
+  body.classList.add('sidebar-closed');
+  body.classList.remove('sidebar-open-mobile');
+};
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (window.innerWidth < 900) {
+      body.classList.add('sidebar-closed');
+    } else {
+      body.classList.remove('sidebar-closed');
+      body.classList.remove('sidebar-open-mobile');
+    }
+  }, 150);
+});
+
+const chapters = ['c0','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11'];
+const chapterTitles = [
+  '配分语是什么','字母与读音','音节与合法','象形字表',
+  '你我他','这是','朋友！','词性空间',
+  'n 形式','外来语','标点规范','词汇总表'
+];
+let currentIdx = 0;
+
+function showChapter(idx) {
+  if (idx < 0 || idx >= chapters.length) return;
+  currentIdx = idx;
+  document.querySelectorAll('.chapter').forEach(c => c.classList.remove('active'));
+  document.getElementById(chapters[idx]).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('active', a.dataset.chapter === chapters[idx]);
+  });
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  prevBtn.disabled = idx === 0;
+  nextBtn.disabled = idx === chapters.length - 1;
+  document.getElementById('prevTitle').textContent = idx > 0 ? chapterTitles[idx - 1] : '—';
+  document.getElementById('nextTitle').textContent = idx < chapters.length - 1 ? chapterTitles[idx + 1] : '—';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.innerWidth < 900) {
+    body.classList.add('sidebar-closed');
+    body.classList.remove('sidebar-open-mobile');
+  }
+}
+
+document.querySelectorAll('.nav-link').forEach(a => {
+  a.onclick = (e) => {
+    e.preventDefault();
+    const idx = chapters.indexOf(a.dataset.chapter);
+    if (idx >= 0) showChapter(idx);
+  };
+});
+
+document.getElementById('prevBtn').onclick = () => showChapter(currentIdx - 1);
+document.getElementById('nextBtn').onclick = () => showChapter(currentIdx + 1);
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowLeft') showChapter(currentIdx - 1);
+  if (e.key === 'ArrowRight') showChapter(currentIdx + 1);
+});
+
+const wordsRaw = [
+  ['a','主语','','','','','主谓分割',''],
+  ['an','雷同、同类、相同物','相同','如同、相等','相同的、近似的','一样地','主表分割',''],
+  ['e','宾语','','','','','谓宾分割',''],
+  ['en','比例、概率','理解','推测','','也许、或许','','百分之'],
+  ['i','旋转、转变、拐点','改变、转弯、变','变得、改变为','','','',''],
+  ['in','违背','犟','反射、反弹、反抗','反的','反而、反面地','但是',''],
+  ['o','请求、需求','','求、想要、需要','想要的','恳切','祈使开头',''],
+  ['on','','','','','','被动开头',''],
+  ['u','的事物、的东西（动词义）','','','','','动词“的”',''],
+  ['un','存在','存在','在','正确的、对的','对地','','在、对、于'],
+  ['pa','负面、消极、背面','失败','谋害','坏的','差地','',''],
+  ['pan','难处、难点','乱','绕、弄复杂','复杂、难、乱','复杂地、步骤多地','',''],
+  ['pe','正面、帮助、好处、成功','成功','有利于、帮','好的、厉害的、成功的','','',''],
+  ['pen','娱乐、笑','笑','玩','娱乐的、玩的','不当回事、玩闹一般','',''],
+  ['pi','目的','','去、前往','有目的的','为了','','为了'],
+  ['pin','方向、方向感、勇气','鼓起勇气','朝向、鼓励、加油','有方向的','','','方向'],
+  ['po','保持、静止','不变、保留下来','停止、保持','永恒、不变的','一直、一如既往','还是',''],
+  ['pon','毅力、耐心、耐久','坚持','磨练','耐久的、有耐心的','耐心地','',''],
+  ['pu','到来','来','邀请、迎接','来的、要来的','要来','来','用途'],
+  ['pun','动机、原因','','由于','','','','因为'],
+  ['ta','尖、高处、山、高度','','拉高、拉丝、捏长','高、凸出、浅、尖','尖锐地','',''],
+  ['tan','创造力、尝试、机会、试验','跳跃、尝试、制作、实验','创造、制作、尝试去','','试着','',''],
+  ['te','谷、深度','压缩','推、压','矮、凹、深的','','',''],
+  ['ten','爆炸、子弹、弹射物、柱体','爆炸、射出、冲出','抓、弄坏','破损、艳丽、爆炸、柱状的','过度','',''],
+  ['ti','时间、时刻、时节','抓住机会','度过','时间的','耗费时间地','','时间'],
+  ['tin','生活、健康、存在、生机','存在、存活、活着','抢救、复活、使……活动','健康的、生机的','有生机地、健康地','',''],
+  ['to','工具、途径、方法、棒子','使用','用、借助、应用','棒状的','','','工具、途径'],
+  ['ton','比较、程度','比较','比较','','更加、更','越来越',''],
+  ['tu','地方、地形、地理位置','','搬动、取代、代替','','','','地方'],
+  ['tun','房子、房间','居住','用……维持生计','','','',''],
+  ['ka','门、联通洞、窗户、鼻子','嗅','闻起来、闻','嗅觉上的','','',''],
+  ['kan','联系、线、串','串起来','沟通','细的、精细的','','',''],
+  ['ke','容器、坑','打包装','储存','内空的','','','载体'],
+  ['ken','安稳、保障、舒适','奠定基础','保障、稳定','安心的、稳定的','','',''],
+  ['ki','气体、烟雾、精神、气氛','吹牛','吹拂、煽动','透明','','',''],
+  ['kin','火、愤怒、烫','煮沸、吼','烹饪','愤怒的、热的','愤怒地','',''],
+  ['ko','液体、水','游动、游泳、润滑','流经、传承','多汁、圆润、滑的、湿的','圆滑地、水润地','',''],
+  ['kon','幻觉','致幻','幻想、想象、想到、念在','幻想的、奇怪的','居然','',''],
+  ['ku','工作、动作、硬物、块、粒','移动、动、工作','做','凝固的、硬的、块状的','','',''],
+  ['kun','概念、道、意义、意思','','','抽象的、玄乎的','','',''],
+  ['fa','老的大的事物、明显的','出现、陈列','显现、陈列出','大的、老的、阅历丰富的','','',''],
+  ['fan','出名、周知、了解、知识','出名、被众所周知','了解、知晓','众所周知的、有影响力的','','',''],
+  ['fe','小新物体、花、植物','','变小','小的、新的、年幼的','','',''],
+  ['fen','精华、甜美、甜、糖','结晶、凝结','','可爱、甜美、甜、粉色','','',''],
+  ['fi','人、人类','','','','','',''],
+  ['fin','动物','','','','','',''],
+  ['fo','嘴巴','饥饿','吃、消耗','','','',''],
+  ['fon','语言、演讲','说','说','','','',''],
+  ['fu','从属关系','被包围','属于','','','',''],
+  ['fun','标准、对应、契合','','影响、对应、契合','适应的、适合的','','标准',''],
+  ['sa','群体、轮回','兜兜转转、轮回','聚集','多、严肃、专业的','来来回回兜兜转转','',''],
+  ['san','多样性、种类、类别、差异','分化、变异','分别','','','',''],
+  ['se','少、软、杀、死','消失、死','使消失、使移除、杀','少、软、软弱','软弱地、不完全地','',''],
+  ['sen','纯洁、单纯、干净','','解开、打扫、提纯','纯洁、单纯、洁白、简单、干净','','',''],
+  ['si','他她它','他她它化','','他她它的','','',''],
+  ['sin','距离、路、脚','走路','远离、失去','遥远的','','',''],
+  ['so','手','抓住、掌握、知道了','抓住、提起、握住','','','',''],
+  ['son','触感、外貌、形状','爽','抚摸','触感、感官上','','形状、外形',''],
+  ['su','所拿之物、奖励','获得奖','拿、买、借、取、获得','','','回报',''],
+  ['sun','礼物、所送之物','施舍','送、卖、还、给','','','成本',''],
+  ['ha','防御','防守','承受','受得了的','','',''],
+  ['han','痛苦、脏、病','变质、腐败','封闭、关闭、阻挠','痛苦、脏、携带疾病的','','',''],
+  ['he','矛盾、伤害、战争、博弈','闹矛盾','进攻','','','',''],
+  ['hen','能量、力气、电、速度','锻炼','充电','快的、迅猛的','强力地、非常、很','',''],
+  ['hi','你、您','','','你的','','',''],
+  ['hin','客人、权威','掌权','尊敬','值得尊敬、尊贵的','值得','',''],
+  ['ho','心情、感受、感觉','心里触动、感动','认为、感受到','','主观上','',''],
+  ['hon','爱、德、礼、文化、人道','守礼、遵守','爱、爱上','真诚、道德、非强制的、人道的','真正地、真诚地','',''],
+  ['hu','数学、量度、度量、数值','估计','测量','数学上、数字上','','',''],
+  ['hun','思维、智商、智力、智慧','动用脑力、算数、计算','处理、思考','','','',''],
+  ['ma','头、脑、决定、领导','决定','决策、领导着','一定的、绝对地','一定地、一定要地','',''],
+  ['man','表面、表现、外皮、衣服','表现','体现了、展示了、暴露','表面上的、外面的、在外的','向外地、外面地','',''],
+  ['me','身体、肉体、主体、保护','','保护','身体的、重要、主要','','',''],
+  ['men','服从者、忠诚、机器','服从','顺着、跟着','同向的、有共同利益的、互利的','互相、相互','',''],
+  ['mi','我','','','我的','我一般地','',''],
+  ['min','客观、总局、环境','抽离、离去','营造、造成','','四周、客观地','',''],
+  ['mo','耳朵、听觉、把手','听到了','听','','听说','',''],
+  ['mon','歌曲','发出声音、拍掌','演奏','听觉上的','有声音地','',''],
+  ['mu','抚养者、父母、成长、育','成长','养育','上一代的、上一层的、前一个的','','',''],
+  ['mun','子女、所造物、教育','学习','教','','','',''],
+  ['na','所有的东西、全体','','','全部、都','','',''],
+  ['nan','惊讶、球极','喜出望外、走极端','','最、顶尖、突出','极其、极端','',''],
+  ['ne','不、没有、无','','','不、没有、无','','',''],
+  ['nen','法律、常理、事实','','履行、必须','真的','必须','',''],
+  ['ni','这、近处、会面、相遇','','靠近、相遇','在近处的、这个','','',''],
+  ['nin','那、远处','','分离、远离','远处、那个','','',''],
+  ['no','眼睛、环形','首尾相接、衔接上了','看、找','','','',''],
+  ['non','颜色、刀、图片','涂色','划、刮','锋利的、锐利的、鲜明的','','',''],
+  ['nu','钱、交易、黄金','交易','交易','富有的、有价值的、金色的','以钱交易地','',''],
+  ['nun','商业、经济、系统','系统化、发展','商业化','经济的、商业的','','',''],
+  ['la','开始、次第、等级、开端','开始','排序','最开头的、原始的、前方','开端','',''],
+  ['lan','命运','打开','打开','','','就会、之后',''],
+  ['le','结束、倒数、最后','结束','倒数','倒数、后面、最终、过去了的','','',''],
+  ['len','历史','后悔','','其他的、别的、可取的、可选的','','或者、否则',''],
+  ['li','事物、东西','','','','对于物体的','分割修饰','物'],
+  ['lin','象形、词语、性质、名字','贴标签、取名','象征','','','象形所指',''],
+  ['lo','脸、表情、圆形','有所作为','做出……样子','圆形的','','',''],
+  ['lon','平面、纸、直、选项','捋直','框选、筛、挑选','直的','直接地','',''],
+  ['lu','配方、文字、画、文章、书','画、写','画、写','画的、艺术的、文学的','唯心、印象派、文学地','',''],
+  ['lun','虚拟、假象、泡沫','','伪装、假装','假的、虚拟','如果、假如','',''],
+  ['wa','一、完整','','修补、补全、成全、使完美','完整的','也','',''],
+  ['wan','单独、孤独、独立','独立','孤立','单独、孤独、仅有的、独立的','只是、单单','只有、仅',''],
+  ['we','二、割裂、割裂感','分开、分割、裂','切、除以','裂开的、分开的','再、又','',''],
+  ['wen','总和、陪伴、总观、大局','合并、粘、加、陪伴','参与、加入','一些的','一起地','和、与、并',''],
+  ['wi','中等、平庸、中间、内部','呼吸、吸','进入','中等、平庸、中间','','',''],
+  ['win','正好、恰恰','达到完美','吸收、汲取','正好、恰好','正好、恰好','',''],
+  ['wo','计划、欲望、性行为','期盼、展望','性行为','','想、会、将要、计划去','',''],
+  ['won','事情','进行','发生','最近的','最近地','',''],
+  ['ya','太阳','','','阳刚、男','明明','',''],
+  ['yan','光','起床','照耀','','','',''],
+  ['ye','月亮、星星','','','阴柔、女','','',''],
+  ['yen','黑、朦胧、晦涩','睡觉','吓','恐怖、阴间、黑的','暗黑地、不知怎么地','',''],
+  ['yo','能力','可胜任、可达成、有货','可以、能','可能的','可以','',''],
+  ['yon','财产、个人用品','','拥有、有','有的','','',''],
+  ['yu','什么、问题','提问','干什么','什么','怎么','',''],
+  ['yun','答复、回复','作答','回答（问题、人）','回答的、说过的','','返回、返还',''],
+];
+
+const wordBody = document.getElementById('wordBody');
+const wordSearch = document.getElementById('wordSearch');
+
+function renderWords() {
+  if (!wordBody) return;
+  const q = wordSearch.value.trim().toLowerCase();
+  const list = wordsRaw.filter(r => {
+    if (!q) return true;
+    return r[0].includes(q) || r.slice(1).some(c => c && c.toLowerCase().includes(q));
+  });
+  wordBody.innerHTML = list.map(r => {
+    const cells = r.slice(1).map(c => `<td>${c || ''}</td>`).join('');
+    return `<tr><td class="glyph">${r[0]}</td><td class="latin">${r[0]}</td>${cells}</tr>`;
+  }).join('') || '<tr><td colspan="9" style="text-align:center; color:#999; padding:24px;">没有找到</td></tr>';
+  document.getElementById('wordCount').textContent = `共 ${list.length} 个词`;
+}
+
+if (wordSearch) {
+  wordSearch.addEventListener('input', renderWords);
+  renderWords();
+}
+
+showChapter(0);
+</script>
+</body>
+</html>

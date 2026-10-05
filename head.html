@@ -1,0 +1,507 @@
+<!-- ============ head.html ============ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于作者 · 樱秋言Cerasumn</title>
+<style>
+  :root {
+    --bg: #14110c;
+    --bg-soft: #1c1913;
+    --card: #241f18;
+    --card-hover: #2e2820;
+    --line: #352f25;
+    --ink: #f0ece2;
+    --ink-soft: #b8b0a0;
+    --ink-dim: #7a7265;
+    --gold: #e6a817;
+    --gold-soft: #f9d97a;
+    --gold-dim: #8a6510;
+    --gold-bg: rgba(230,168,23,0.1);
+    --topbar-h: 64px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    line-height: 1.75;
+    padding-top: var(--topbar-h);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ 全局顶栏 ============ */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: var(--topbar-h);
+    background: rgba(20,17,12,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .inner {
+    max-width: 1240px; margin: 0 auto;
+    height: var(--topbar-h); padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .topbar .brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+    font-weight: bold; letter-spacing: 3px; font-size: 18px;
+  }
+  .topbar .brand .dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    display: flex; align-items: center; justify-content: center;
+    color: #14110c; font-size: 15px; font-weight: 900;
+    letter-spacing: 0;
+  }
+  .topbar .brand small {
+    font-size: 11px; color: var(--ink-dim);
+    letter-spacing: 2px; font-weight: normal;
+  }
+  .topbar .links {
+    display: flex; gap: 4px; margin-left: auto;
+  }
+  .topbar .links a {
+    color: var(--ink-soft); text-decoration: none;
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 14px; transition: all .15s;
+    letter-spacing: 1px;
+  }
+  .topbar .links a:hover { background: var(--gold-bg); color: var(--gold-soft); }
+  .topbar .links a.active { background: var(--gold); color: #14110c; font-weight: 600; }
+  .topbar .head-link {
+    display: inline-flex; align-items: center;
+    margin-left: 4px; text-decoration: none;
+    transition: transform .15s;
+  }
+  .topbar .head-link:hover { transform: scale(1.08); }
+  .head-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    display: flex; align-items: center; justify-content: center;
+    color: #14110c; font-size: 18px; font-weight: 900;
+    border: 2px solid rgba(255,255,255,0.12);
+    overflow: hidden; flex-shrink: 0;
+  }
+  .head-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 720px) {
+    .topbar .inner { padding: 0 14px; gap: 10px; }
+    .topbar .brand { font-size: 15px; letter-spacing: 2px; }
+    .topbar .brand small { display: none; }
+    .topbar .links a { padding: 6px 10px; font-size: 13px; }
+    .head-avatar { width: 34px; height: 34px; font-size: 15px; }
+  }
+
+  /* ============ 主容器 ============ */
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 56px 24px 100px;
+  }
+
+  /* ============ 头像 + 名字 Hero ============ */
+  .profile-hero {
+    text-align: center;
+    padding: 24px 0 40px;
+  }
+  .avatar-ring {
+    width: 180px; height: 180px;
+    margin: 0 auto 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e6a817, #b8860b);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(230,168,23,0.28);
+    animation: floatIn .8s ease;
+  }
+  @keyframes floatIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .avatar-ring::before {
+    content: "";
+    position: absolute; inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(230,168,23,0.3), transparent 70%);
+    z-index: -1;
+  }
+  .avatar-ring .inner-circle {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #e6a817, #b8860b);
+  }
+  .avatar-ring .inner-circle img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .avatar-ring .placeholder {
+    font-size: 84px; font-weight: 900;
+    color: #14110c;
+    font-family: "Noto Serif CJK SC", "Source Han Serif SC", serif;
+  }
+
+  .profile-name {
+    font-size: 38px; font-weight: 800;
+    margin: 0 0 8px;
+    letter-spacing: 2px;
+    color: var(--gold);
+  }
+  .profile-en {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px; color: var(--ink-dim);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .profile-bio {
+    font-size: 15px; color: var(--ink-soft);
+    max-width: 440px; margin: 0 auto 28px;
+    line-height: 1.8;
+  }
+  .profile-tags {
+    display: flex; gap: 10px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 28px;
+  }
+  .tag-pill {
+    padding: 8px 20px; border-radius: 999px;
+    background: var(--card);
+    color: var(--ink-soft);
+    font-size: 13px;
+    border: 1px solid var(--line);
+    transition: all .15s;
+  }
+  .tag-pill:hover {
+    background: var(--card-hover);
+    color: var(--gold-soft);
+    border-color: var(--gold-dim);
+  }
+  .tag-pill.primary {
+    background: var(--gold);
+    color: #14110c;
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+  .tag-pill.primary:hover {
+    background: var(--gold-soft);
+    color: #14110c;
+  }
+
+  /* ============ 区块标题 ============ */
+  .section-label {
+    font-size: 12px; color: var(--ink-dim);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin: 56px 0 12px;
+    padding-left: 4px;
+  }
+
+  /* ============ 链接卡片列表 ============ */
+  .link-list {
+    display: flex; flex-direction: column;
+    gap: 2px;
+  }
+  .link-item {
+    display: flex; align-items: center;
+    gap: 18px;
+    padding: 20px 20px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background .18s;
+    cursor: pointer;
+  }
+  .link-item:hover {
+    background: var(--card);
+  }
+  .link-item .ico {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    background: var(--card);
+    color: var(--gold-soft);
+    transition: all .15s;
+  }
+  .link-item:hover .ico {
+    background: var(--gold);
+    color: #14110c;
+    transform: scale(1.05);
+  }
+  .link-item .info { flex: 1; min-width: 0; }
+  .link-item .title {
+    font-size: 16px; font-weight: 600;
+    color: var(--ink); letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  .link-item .desc {
+    font-size: 13px; color: var(--ink-dim);
+    letter-spacing: 0.3px;
+  }
+  .link-item .arrow {
+    color: var(--ink-dim);
+    font-size: 18px;
+    transition: transform .15s, color .15s;
+  }
+  .link-item:hover .arrow {
+    color: var(--gold-soft);
+    transform: translateX(4px);
+  }
+
+  /* ============ 大标题文字 ============ */
+  .big-title {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin: 40px 0 16px;
+    color: var(--ink);
+  }
+  .big-title .accent {
+    color: var(--gold);
+  }
+  .big-title-sub {
+    font-size: 15px; color: var(--ink-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ============ 时间线 ============ */
+  .timeline {
+    position: relative; padding-left: 28px;
+    margin-top: 8px;
+  }
+  .timeline::before {
+    content: ""; position: absolute;
+    left: 7px; top: 8px; bottom: 8px;
+    width: 2px; background: var(--line);
+  }
+  .tl-item {
+    position: relative; padding-bottom: 22px;
+  }
+  .tl-item::before {
+    content: ""; position: absolute;
+    left: -28px; top: 6px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--bg); border: 3px solid var(--gold-dim);
+    box-sizing: border-box;
+  }
+  .tl-item:first-child::before {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(230,168,23,0.15);
+  }
+  .tl-item .date {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; color: var(--gold);
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .tl-item .title {
+    font-size: 15px; font-weight: 600;
+    color: var(--ink); margin-bottom: 2px;
+  }
+  .tl-item .desc {
+    font-size: 13px; color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ============ 底部 ============ */
+  .back-section {
+    margin-top: 72px;
+    text-align: center;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; border-radius: 12px;
+    background: var(--gold);
+    color: #14110c;
+    text-decoration: none;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 1px;
+    transition: all .18s;
+    box-shadow: 0 8px 24px rgba(230,168,23,0.28);
+  }
+  .back-btn:hover {
+    background: var(--gold-soft);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(230,168,23,0.42);
+  }
+
+  .site-footer {
+    margin-top: 64px;
+    padding: 32px 0 0;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+  .site-footer .glyph {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .site-footer a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .site-footer a:hover { color: var(--gold-soft); }
+
+  /* 滚动条 */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4a4234; }
+</style>
+</head>
+<body>
+
+<!-- ============ 顶栏 ============ -->
+<nav class="topbar">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <span class="dot">配</span>
+      配分语<small>PEFON</small>
+    </a>
+    <div class="links">
+      <a href="index.html">首页</a>
+      <a href="studing.html">学习</a>
+      <a href="translating.html">翻译</a>
+      <a href="head.html" class="head-link active" title="关于作者">
+        <span class="head-avatar">
+           <img src="cat.png" alt="Cerasumn">
+        </span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ============ 头像 + 名字 ============ -->
+  <div class="profile-hero">
+    <div class="avatar-ring">
+      <div class="inner-circle">
+        <img src="cat.png" alt="Cerasumn">
+      </div>
+    </div>
+
+    <h1 class="profile-name">樱秋言</h1>
+    <div class="profile-en">Cerasumn</div>
+    <p class="profile-bio">
+      配分语学习站的作者与维护者。<br>
+      热爱人造语言、文字设计与极简主义。
+    </p>
+
+    <div class="profile-tags">
+      <span class="tag-pill primary">网站作者</span>
+      <span class="tag-pill">人造语言</span>
+      <span class="tag-pill">前端</span>
+      <span class="tag-pill">配分语学习</span>
+    </div>
+  </div>
+
+  <!-- ============ 联系 / 链接 ============ -->
+  <div class="section-label">Connect</div>
+  <div class="link-list">
+    <div class="link-item" id="qqItem">
+      <span class="ico">💬</span>
+      <div class="info">
+        <div class="title">QQ 群</div>
+        <div class="desc" id="qqDesc">673029418 · 配分语研究社群</div>
+      </div>
+      <span class="arrow">→</span>
+    </div>
+    <a class="link-item" href="https://github.com" target="_blank" rel="noopener">
+      <span class="ico">🐱</span>
+      <div class="info">
+        <div class="title">Github</div>
+        <div class="desc">学习站源码与开源项目</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link-item" href="index.html">
+      <span class="ico">📖</span>
+      <div class="info">
+        <div class="title">配分语学习站</div>
+        <div class="desc">本站首页 · 从零开始学配分语</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link-item" href="translating.html">
+      <span class="ico">🔤</span>
+      <div class="info">
+        <div class="title">象形字翻译器</div>
+        <div class="desc">拉丁写法 ⇄ 象形写法 互译</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <!-- ============ 关于本站 ============ -->
+  <div class="section-label">About</div>
+
+  <div class="big-title">
+    Pefon <span class="accent">Et</span><br>
+    Programmatei
+  </div>
+  <div class="big-title-sub" style="margin-bottom:28px;">
+    配分语学习站 · 网站作者与开发
+  </div>
+
+  <p style="color:var(--ink-soft); font-size:15px; line-height:1.8;">
+    配分语学习站是我为学习配分语而做的非官方学习工具。
+    目标是让零基础的中文使用者能够在一个下午内看完核心内容，
+    并动手写出第一个句子。
+  </p>
+  <p style="color:var(--ink-soft); font-size:15px; line-height:1.8;">
+    本站包含首页、学习、翻译器、关于作者四个部分。
+    内容依据《配分统合教程 0.2.1》与《新词汇表 1.5》整理，
+    仅供学习交流使用。配分语的一切版权归原作者所有。
+  </p>
+
+
+
+  <!-- ============ 致谢 ============ -->
+  <div class="section-label">Thanks</div>
+  <p style="color:var(--ink-soft); font-size:14px; line-height:1.8;">
+    感谢 LJG 设计出配分语这门语言，感谢二项式顺铂团队、Nefi、鱼月、
+    At_Yeso、Ouyang、Billynike 等社群成员为配分语所做的贡献。
+  </p>
+
+  <!-- ============ 返回 ============ -->
+  <div class="back-section">
+    <a href="index.html" class="back-btn">← 返回首页</a>
+  </div>
+
+  <!-- ============ 页脚 ============ -->
+  <footer class="site-footer">
+    <div class="glyph">mi a fan e pefon.</div>
+    <p>配分语学习站 · 作者：樱秋言 Cerasumn</p>
+    <p><a href="index.html">首页</a> · <a href="studing.html">学习</a> · <a href="translating.html">翻译</a></p>
+  </footer>
+
+</div>
+
+<script>
+  // 点击 QQ 群号复制
+  const qqItem = document.getElementById('qqItem');
+  const qqDesc = document.getElementById('qqDesc');
+  qqItem.onclick = () => {
+    navigator.clipboard.writeText('673029418').then(() => {
+      const old = qqDesc.textContent;
+      qqDesc.textContent = '✓ 已复制 QQ 群号：673029418';
+      qqDesc.style.color = '#f9d97a';
+      setTimeout(() => {
+        qqDesc.textContent = old;
+        qqDesc.style.color = '';
+      }, 1800);
+    });
+  };
+</script>
+</body>
+</html>
